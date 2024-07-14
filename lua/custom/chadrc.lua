@@ -1,6 +1,7 @@
 ---@type ChadrcConfig
 local M = {}
-
+M.plugins = "custom.plugins"
+M.mappings = require("custom.mappings")
 M.ui = {
   theme = 'ayu_dark',
   hl_override = {
@@ -61,6 +62,6 @@ M.ui = {
 "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣇⣿⣿⣿⣿⣿⣿⣿⣷⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     }
   }
-  }
+}
 
 return M
