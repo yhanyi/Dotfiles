@@ -46,8 +46,15 @@ local plugins = {
     end,
   },
   {
+    "vim-crystal/vim-crystal",
+    ft = "crystal",
+    config = function ()
+      vim.g.crystal_auto_format = 1
+    end
+  },
+  {
     "neovim/nvim-lspconfig",
-    config = function()
+    config = function ()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
@@ -56,11 +63,14 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        "clangd",
-        "clang-format",
-        "codelldb",
-      }
-    }
+          "rust-analyzer",
+          "clangd",
+          "clang-format",
+          "codelldb",
+          "bash-language-server",
+          "cmake-language-server",
+      },
+    },
   }
 }
 return plugins
