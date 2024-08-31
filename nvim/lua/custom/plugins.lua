@@ -48,7 +48,7 @@ local plugins = {
   {
     "vim-crystal/vim-crystal",
     ft = "crystal",
-    config = function ()
+    config = function()
       vim.g.crystal_auto_format = 1
     end
   },
