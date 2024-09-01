@@ -5,6 +5,14 @@ local default_plugins = {
   "nvim-lua/plenary.nvim",
 
   {
+    "IogaMaster/neocord",
+    event = "VeryLazy",
+    config = function()
+      require "plugins.configs.neocord"
+    end,
+  },
+
+  {
     "NvChad/base46",
     branch = "v2.0",
     build = function()
