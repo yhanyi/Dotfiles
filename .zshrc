@@ -4,6 +4,14 @@ fcd() {
   dir=$(find ${1:-.} -type d -not -path '*/\.*' 2> /dev/null | fzf +m) && cd "$dir"
 }
 
+# Checks if tmux is installed and starts it up.
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
+
+# Alias for compiling C++.
+alias gpp='g++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
