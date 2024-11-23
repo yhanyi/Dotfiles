@@ -9,9 +9,6 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   exec tmux
 fi
 
-# Alias for compiling C++.
-alias gpp='g++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -114,8 +111,45 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# LLVM and C++ configuration
+export LLVM_PATH="/opt/homebrew/opt/llvm"
+export PATH="$LLVM_PATH/bin:$PATH"
+
+# Force use of LLVM/Clang instead of system GCC
+export CC="$LLVM_PATH/bin/clang"
+export CXX="$LLVM_PATH/bin/clang++"
+export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
+export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
+
+# Include and library paths
+export CPATH="$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
+export LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
+export LD_LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
+export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
+
+# Enhanced C++ compilation alias using clang++
+alias gpp='clang++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
+
+# LSP configuration for nvim
+export CLANGD_PATH="$LLVM_PATH/bin/clangd"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export CPATH="/opt/homebrew/include"
-export LIBRARY_PATH="/opt/homebrew/lib"
+# Verify C++ environment
+check_cpp_env() {
+    echo "Checking C++ environment..."
+    echo "C++ Compiler: $(which clang++)"
+    echo "LLVM Path: $(which llvm-config)"
+    echo "Clangd: $(which clangd)"
+    echo "Include paths:"
+    echo $CPLUS_INCLUDE_PATH | tr ':' '\n'
+    echo "\nChecking if standard headers are accessible:"
+    echo "#include <iostream>" > /tmp/test.cpp
+    echo "int main() { return 0; }" >> /tmp/test.cpp
+    clang++ -v /tmp/test.cpp -o /tmp/test 2>&1
+    rm /tmp/test.cpp 2>/dev/null
+    rm /tmp/test 2>/dev/null
+}
+
+# Alias for checking environment
+alias check_cpp='check_cpp_env'
