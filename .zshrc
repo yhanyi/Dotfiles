@@ -9,10 +9,22 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   exec tmux
 fi
 
+# Alias for find and edit utility.
+alias fe="~/.scripts/fe.sh"
+
+# Alias for quicktesting utility.
+alias cpptest="~/.scripts/quicktest.sh cpp"
+alias gotest="~/.scripts/quicktest.sh go"
+alias rusttest="~/.scripts/quicktest.sh rust"
+
+# Path to KDB+/Q installation.
+export QHOME="~/Code/m64"
+alias q="QHOME=~/Code/m64 rlwrap -r ~/Code/m64/m64/q"
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
+# Path to oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -129,6 +141,9 @@ export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/hom
 
 # Enhanced C++ compilation alias using clang++
 alias gpp='clang++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
+
+# Alias for updating code folder.
+alias save='cd ~/Comp && git add . && git commit -m "+" && git push origin main'
 
 # LSP configuration for nvim
 export CLANGD_PATH="$LLVM_PATH/bin/clangd"
