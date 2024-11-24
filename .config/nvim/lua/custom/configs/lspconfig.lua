@@ -12,17 +12,33 @@ lspconfig.rust_analyzer.setup(
   }
 )
 
-lspconfig.clangd.setup(
-  {
----    on_attach = on_attach
-    on_attach = function(client, bufnr)
-      client.server_capabilities.signatureHelpProvider = false
-      on_attach(client, bufnr)
-    end,
-    capabilities = capabilities
----    filetypes = {"c"},
-  }
-)
+lspconfig.clangd.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--fallback-style=llvm"
+  },
+  root_dir = lspconfig.util.root_pattern(
+    '.clangd',
+    '.clang-tidy',
+    '.clang-format',
+    'compile_commands.json',
+    'compile_flags.txt',
+    'configure.ac',
+    '.git'
+  ),
+  init_options = {
+    usePlaceholders = true,
+    completeUnimported = true,
+    clangdFileStatus = true
+  },
+}
 
 lspconfig.cmake.setup(
   {
