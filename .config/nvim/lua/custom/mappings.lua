@@ -5,12 +5,12 @@ M.dap = {
   n = {
     ["<leader>db"] = {
       "<cmd> DapToggleBreakpoint <CR>",
-      "Add breakpoint at line",
+      "Add Breakpoint At Line",
     },
     ["<leader>dr"] = {
       "<cmd> DapContinue <CR>",
-      "Start or continue the debugger",
-    }
+      "Start/Continue Debugger",
+    },
   }
 }
 
