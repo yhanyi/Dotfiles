@@ -168,3 +168,5 @@ check_cpp_env() {
 
 # Alias for checking environment
 alias check_cpp='check_cpp_env'
+
+eval "$(starship init zsh)"
