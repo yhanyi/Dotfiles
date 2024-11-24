@@ -14,4 +14,11 @@ M.dap = {
   }
 }
 
+M.telescope = {
+  n = {
+    ["<leader>fn"] = { "<cmd>Telescope noice<cr>", "Find Noice Messages" },
+    ["<leader>nd"] = { "<cmd>NoiceDismiss<cr>", "Dismiss Noice Messages" },
+  }
+}
+
 return M
