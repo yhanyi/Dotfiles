@@ -49,25 +49,34 @@ lspconfig.cmake.setup(
   }
 )
 
---- llspconfig.clangd.setup {
----   on_attach = function(client, bufnr)
----     client.server_capabilities.signatureHelpProvider = false
----     on_attach(client, bufnr)
----   end,
----   capabilities = capabilities,
----   cmd = {
----     "clangd",
----     "--background-index",
----     "--suggest-missing-includes",
----     "--clang-tidy",
----     "--header-insertion=iwyu",
----     "--completion-style=detailed",
----     "--function-arg-placeholders",
----     "--fallback-style=llvm",
----   },
----   init_options = {
----     usePlaceholders = true,
----     completeUnimported = true,
----     clangdFileStatus = true,
----   },
---- }
+lspconfig.pyright.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    python = {
+      analysis = {
+        typeCheckingMode = "basic",
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
+})
+
+lspconfig.gopls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = {"gopls"},
+  filetypes = {"go", "gomod", "gowork", "gotmpl"},
+  root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      usePlaceholders = true,
+      completeUnimported = true,
+    },
+  },
+})
