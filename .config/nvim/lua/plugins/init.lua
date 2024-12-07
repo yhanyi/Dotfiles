@@ -5,14 +5,6 @@ local default_plugins = {
   "nvim-lua/plenary.nvim",
 
   {
-    "IogaMaster/neocord",
-    event = "VeryLazy",
-    config = function()
-      require "plugins.configs.neocord"
-    end,
-  },
-
-  {
     "NvChad/base46",
     branch = "v2.0",
     build = function()
@@ -268,6 +260,14 @@ local default_plugins = {
       require("which-key").setup(opts)
     end,
   },
+
+  {
+    'vyfor/cord.nvim',
+    build = './build || .\\build',
+    event = 'VeryLazy',
+    opts = {}, -- calls require('cord').setup()
+  },
+
 }
 
 local config = require("core.utils").load_config()
