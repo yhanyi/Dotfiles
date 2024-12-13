@@ -1,4 +1,4 @@
-# dotfiles (Arch)
+# Dotfiles (Arch)
 
 WIP - Setting up Arch on a dual boot with Windows 11, 200 GB partition.
 
