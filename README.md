@@ -1,4 +1,4 @@
-# dotfiles (MacOS)
+# Dotfiles (MacOS)
 
 ## Setup
 
