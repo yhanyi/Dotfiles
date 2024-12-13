@@ -1,5 +1,5 @@
 # Dotfiles (Arch)
 
-WIP - Setting up Arch on a dual boot with Windows 11, 200 GB partition.
+Config files for an Arch Linux boot.
 
-Configs are handled with stow, run `sudo pacman -S stow` to install, then run `stow . -t ~` to generate symlinks to the config files.
+`Stow` is used to sync the config files with the system. Run `sudo pacman -S stow`, then `stow . -t ~` to generate symlinks to the config files.

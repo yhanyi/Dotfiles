@@ -72,6 +72,7 @@ set showcmd
 " set smartcase
 set showmode
 set cursorline
+set clipboard+=unnamedplus
 
 " Statusline
 
