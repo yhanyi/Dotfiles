@@ -1,6 +1,4 @@
-# dotfiles
-
-Managing my dotfiles a bit more seriously.
+# dotfiles (MacOS)
 
 ## Setup
 
