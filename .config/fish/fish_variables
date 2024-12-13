@@ -2,7 +2,7 @@
 # VERSION: 3.0
 SETUVAR --export LSCOLORS:gxfxbEaEBxxEhEhBaDaCaD\x60
 SETUVAR __fish_initialized:3400
-SETUVAR fish_color_autosuggestion:555\x1ebrblack
+SETUVAR fish_color_autosuggestion:brblack
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:blue
 SETUVAR fish_color_comment:red
@@ -16,10 +16,10 @@ SETUVAR fish_color_host:normal
 SETUVAR fish_color_host_remote:yellow
 SETUVAR fish_color_match:\x2d\x2dbackground\x3dbrblue
 SETUVAR fish_color_normal:normal
-SETUVAR fish_color_operator:cyan
+SETUVAR fish_color_operator:brcyan
 SETUVAR fish_color_param:cyan
 SETUVAR fish_color_quote:yellow
-SETUVAR fish_color_redirection:cyan
+SETUVAR fish_color_redirection:cyan\x1e\x2d\x2dbold
 SETUVAR fish_color_search_match:bryellow\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_status:red
