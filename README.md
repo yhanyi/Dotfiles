@@ -1,3 +1,3 @@
-# dotfiles
+# Dotfiles
 
-Managing my dotfiles a bit more seriously.
+Config files for both my MacOS and Arch-Linux setups.
