@@ -9,14 +9,6 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   exec tmux
 fi
 
-# Alias for find and edit utility.
-alias fe="~/.scripts/fe.sh"
-
-# Alias for quicktesting utility.
-alias cpptest="~/.scripts/quicktest.sh cpp"
-alias gotest="~/.scripts/quicktest.sh go"
-alias rusttest="~/.scripts/quicktest.sh rust"
-
 # Path to KDB+/Q installation.
 export QHOME="~/Code/m64"
 alias q="QHOME=~/Code/m64 rlwrap -r ~/Code/m64/m64/q"
@@ -31,7 +23,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="gnzh"
+ZSH_THEME="minimal"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -142,31 +134,9 @@ export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/hom
 # Enhanced C++ compilation alias using clang++
 alias gpp='clang++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
 
-# Alias for updating code folder.
-alias save='cd ~/Comp && git add . && git commit -m "+" && git push origin main'
-
 # LSP configuration for nvim
 export CLANGD_PATH="$LLVM_PATH/bin/clangd"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Verify C++ environment
-check_cpp_env() {
-    echo "Checking C++ environment..."
-    echo "C++ Compiler: $(which clang++)"
-    echo "LLVM Path: $(which llvm-config)"
-    echo "Clangd: $(which clangd)"
-    echo "Include paths:"
-    echo $CPLUS_INCLUDE_PATH | tr ':' '\n'
-    echo "\nChecking if standard headers are accessible:"
-    echo "#include <iostream>" > /tmp/test.cpp
-    echo "int main() { return 0; }" >> /tmp/test.cpp
-    clang++ -v /tmp/test.cpp -o /tmp/test 2>&1
-    rm /tmp/test.cpp 2>/dev/null
-    rm /tmp/test 2>/dev/null
-}
-
-# Alias for checking environment
-alias check_cpp='check_cpp_env'
 
 eval "$(starship init zsh)"
