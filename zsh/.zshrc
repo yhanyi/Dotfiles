@@ -1,14 +1,3 @@
-# Enable Fuzzy Finding using fcd
-fcd() {
-  local dir
-  dir=$(find ${1:-.} -type d -not -path '*/\.*' 2> /dev/null | fzf +m) && cd "$dir"
-}
-
-# Checks if tmux is installed and starts it up.
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
-fi
-
 # Path to KDB+/Q installation.
 export QHOME="~/Code/m64"
 alias q="QHOME=~/Code/m64 rlwrap -r ~/Code/m64/m64/q"
@@ -133,6 +122,9 @@ export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/hom
 
 # Enhanced C++ compilation alias using clang++
 alias gpp='clang++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
+
+# Enhanced C++ compilation alias for CS3211
+alias gppp='clang++ -g -std=c++20 -pthread -O3 -Wpedantic -Wall -Wextra -Wconversion -Werror'
 
 # LSP configuration for nvim
 export CLANGD_PATH="$LLVM_PATH/bin/clangd"

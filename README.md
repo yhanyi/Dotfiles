@@ -4,6 +4,26 @@
 
 Ensure you have Homebrew installed, and use `brew install stow` to download the symlink manager. Also run `brew install starship`.
 
+stow -v vim zsh config
+# stow -v -D vim zsh config
+# stow -v -R vim zsh config
+
+## Dev Environment
+
+- Neovim
+- Ghostty
+- Starship
+
+## Stow Commands
+
+Set up `Dotfiles` within the root directory.
+
+- `stow -v vim zsh config` - Stows files to root directory
+- `stow -v -D vim zsh config` - Deletes the stowed files
+- `stow -v -R vim zsh config` - Reloads updated files
+
+## Deprecated
+
 ## Neovim (NvChad)
 
 To be updated.

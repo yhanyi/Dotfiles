@@ -83,12 +83,19 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-          "rust-analyzer",
-          "clangd",
-          "clang-format",
-          "codelldb",
-          "bash-language-server",
-          "cmake-language-server",
+        -- Rust 
+        "rust-analyzer",
+        -- C++
+        "clangd",
+        "clang-format",
+        "codelldb",
+        "bash-language-server",
+        "cmake-language-server",
+        -- Python
+        "black",
+        "mypy",
+        "ruff",
+        "pyright"
       },
     },
   },
