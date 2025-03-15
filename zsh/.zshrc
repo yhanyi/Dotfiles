@@ -1,6 +1,6 @@
 # Path to KDB+/Q installation.
-export QHOME="~/Code/m64"
-alias q="QHOME=~/Code/m64 rlwrap -r ~/Code/m64/m64/q"
+export QHOME="~/q"
+alias q="QHOME=~/q rlwrap -r ~/q/m64/q"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
