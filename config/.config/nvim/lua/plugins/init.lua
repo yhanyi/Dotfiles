@@ -17,7 +17,15 @@ local M = {
     config = function()
       require("plugins.configs.telescope")
     end
-  }
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("plugins.configs.treesitter")
+    end
+  },
 }
 
 return M
