@@ -40,6 +40,14 @@ local M = {
       require("plugins.configs.neotree")
     end
   },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require("plugins.configs.lualine")
+    end
+  },
 }
 
 return M
