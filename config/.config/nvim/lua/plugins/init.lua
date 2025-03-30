@@ -26,6 +26,20 @@ local M = {
       require("plugins.configs.treesitter")
     end
   },
+
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    lazy = false,
+    config = function()
+      require("plugins.configs.neotree")
+    end
+  },
 }
 
 return M
