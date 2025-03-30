@@ -62,5 +62,19 @@ return {
       vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', { desc = 'Find buffers' })
       vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = 'Find help' })
     end
+  },
+
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    config = function()
+      require("telescope").setup {
+        extensions = {
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {}
+          }
+        }
+      }
+      require("telescope").load_extension("ui-select")
+    end
   }
 }
