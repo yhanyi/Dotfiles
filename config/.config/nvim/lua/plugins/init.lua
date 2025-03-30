@@ -9,6 +9,15 @@ local M = {
       require("catppuccin").setup({})
     end,
   },
+
+  {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.8',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require("plugins.configs.telescope")
+    end
+  }
 }
 
 return M
