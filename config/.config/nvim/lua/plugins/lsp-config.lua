@@ -20,7 +20,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
       vim.diagnostic.config({
         virtual_text = {
           prefix = '●',
@@ -58,7 +58,7 @@ return {
         settings = {
           ['rust-analyzer'] = {
             diagnostics = {
-              enable = false;
+              enable = false,
             }
           }
         }
@@ -93,7 +93,7 @@ return {
 
       lspconfig.cmake.setup({
         capabilities = capabilities,
-        filetypes = {"CMakeLists.txt"},
+        filetypes = { "CMakeLists.txt" },
         root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
       })
 
@@ -112,8 +112,8 @@ return {
 
       lspconfig.gopls.setup({
         capabilities = capabilities,
-        cmd = {"gopls"},
-        filetypes = {"go", "gomod", "gowork", "gotmpl"},
+        cmd = { "gopls" },
+        filetypes = { "go", "gomod", "gowork", "gotmpl" },
         root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
         settings = {
           gopls = {
