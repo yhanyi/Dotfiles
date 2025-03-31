@@ -20,6 +20,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
       vim.diagnostic.config({
         virtual_text = {
           prefix = '●',
@@ -44,11 +45,16 @@ return {
 
       local lspconfig = require("lspconfig")
 
-      lspconfig.lua_ls.setup({})
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities
+      })
 
-      lspconfig.ts_ls.setup({})
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities
+      })
 
       lspconfig.rust_analyzer.setup({
+        capabilities = capabilities,
         settings = {
           ['rust-analyzer'] = {
             diagnostics = {
@@ -58,7 +64,8 @@ return {
         }
       })
 
-      lspconfig.clangd.setup {
+      lspconfig.clangd.setup({
+        capabilities = capabilities,
         cmd = {
           "clangd",
           "--background-index",
@@ -82,16 +89,16 @@ return {
           completeUnimported = true,
           clangdFileStatus = true
         },
-      }
+      })
 
-      lspconfig.cmake.setup(
-        {
-          filetypes = {"CMakeLists.txt"},
-          root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
-        }
-      )
+      lspconfig.cmake.setup({
+        capabilities = capabilities,
+        filetypes = {"CMakeLists.txt"},
+        root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
+      })
 
       lspconfig.pyright.setup({
+        capabilities = capabilities,
         settings = {
           python = {
             analysis = {
@@ -104,6 +111,7 @@ return {
       })
 
       lspconfig.gopls.setup({
+        capabilities = capabilities,
         cmd = {"gopls"},
         filetypes = {"go", "gomod", "gowork", "gotmpl"},
         root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
