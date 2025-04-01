@@ -123,9 +123,6 @@ export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/hom
 # Enhanced C++ compilation alias using clang++
 alias gpp='clang++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
 
-# Enhanced C++ compilation alias for CS3211
-alias gppp='clang++ -g -std=c++20 -pthread -O3 -Wpedantic -Wall -Wextra -Wconversion -Werror'
-
 # LSP configuration for nvim
 export CLANGD_PATH="$LLVM_PATH/bin/clangd"
 
