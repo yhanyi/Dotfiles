@@ -35,7 +35,7 @@ return {
           tooltip = 'The Superior Text Editor', -- Text to display when hovering over the editor's image
         },
         display = {
-          theme = "catppuccin",
+          theme = "default",
           flavor = "accent",
           show_time = true,             -- Display start timestamp
           show_repository = true,       -- Display 'View repository' button linked to repository url, if any
