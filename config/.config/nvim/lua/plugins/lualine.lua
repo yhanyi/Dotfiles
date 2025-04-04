@@ -112,19 +112,40 @@ local filetype = {
 
 local progress = { "progress" }
 
+local colors = {
+  black        = '#282828',
+  white        = '#ebdbb2',
+  red          = '#fb4934',
+  green        = '#b8bb26',
+  blue         = '#83a598',
+  yellow       = '#fe8019',
+  gray         = '#a89984',
+  darkgray     = '#3c3836',
+  lightgray    = '#504945',
+  inactivegray = '#7c6f64',
+}
+
 return {
   "nvim-lualine/lualine.nvim",
   opts = {
     options = {
       theme = {
         normal = {
-          -- a = "StatusLine",
-          -- b = "Visual",
-          -- c = "StatusLine",
-          -- x = "StatusLine",
-          -- y = "StatusLine",
-          -- z = "StatusLine",
+          a = "StatusLine",
+          b = "StatusLine",
+          c = "StatusLine",
+          x = "StatusLine",
+          y = "StatusLine",
+          z = "StatusLine",
         },
+        -- insert = {
+        --   a = { bg = colors.blue, fg = colors.orange },
+        --   b = "StatusLine",
+        --   c = "StatusLine",
+        --   x = "StatusLine",
+        --   y = "StatusLine",
+        --   z = "StatusLine",
+        -- }
       },
       globalstatus = true,
       always_divide_middle = false,
