@@ -1,23 +1,21 @@
-local conditions = {
-  buffer_not_empty = function()
-    return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-  end,
-  buffer_empty = function()
-    return vim.fn.empty(vim.fn.expand("%:t")) == 1
-  end,
-  screen_width = function(min_w)
-    return function()
-      return vim.o.columns > min_w
-    end
-  end,
-  check_git_workspace = function()
-    local filepath = vim.fn.expand("%:p:h")
-    local gitdir = vim.fn.finddir(".git", filepath .. ";")
-    return gitdir and #gitdir > 0 and #gitdir < #filepath
-  end,
-  diff_mode = function()
-    return vim.o.diff == true
-  end,
+local colours = {
+  black  = '#080808',
+  white  = '#ebdbb2',
+  red    = '#dc4a4c',
+  green  = '#9ece69',
+  yellow = '#fe8019',
+  blue   = '#80a0ff',
+  cyan   = '#79dac8',
+  teal   = '#6dcbbd',
+  violet = '#bb9af7',
+}
+
+local theme = {
+  normal = {},
+  insert = { a = { bg = colours.teal, fg = colours.black }, b = "StatusLine" },
+  visual = { a = { bg = colours.violet, fg = colours.black }, b = "StatusLine" },
+  replace = { a = { bg = colours.red, fg = colours.black }, b = "StatusLine" },
+  inactive = {},
 }
 
 local branch = {
@@ -28,7 +26,6 @@ local branch = {
       return ""
     end
 
-    -- PERF: is it ok to run this on each render
     local h = vim.api.nvim_get_hl(0, {
       name = "StatusLine",
     })
@@ -52,24 +49,11 @@ local diagnostics = {
   symbols = { error = " ", warn = " ", info = " ", hint = " " },
 }
 
-local filename = {
-  "filename",
-  path = 4,
-  shorting_target = vim.fn.winwidth(0) / 2,
-  symbols = {
-    modified = "●",
-  },
-  cond = conditions.buffer_not_empty,
-}
-
-
 local cwd = {
   function()
     return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
   end,
 }
-
-local separator = { "%=" }
 
 local macro = {
   function()
@@ -105,76 +89,48 @@ local location = { "location" }
 
 local encoding = { "encoding" }
 
-local filetype = {
-  "filetype",
-  cond = conditions.screen_width(120),
-}
+local filetype = { "filetype" }
 
 local progress = { "progress" }
 
-local colors = {
-  black        = '#282828',
-  white        = '#ebdbb2',
-  red          = '#fb4934',
-  green        = '#b8bb26',
-  blue         = '#83a598',
-  yellow       = '#fe8019',
-  gray         = '#a89984',
-  darkgray     = '#3c3836',
-  lightgray    = '#504945',
-  inactivegray = '#7c6f64',
-}
-
 return {
-  "nvim-lualine/lualine.nvim",
-  opts = {
-    options = {
-      theme = {
-        normal = {
-          a = "StatusLine",
-          b = "StatusLine",
-          c = "StatusLine",
-          x = "StatusLine",
-          y = "StatusLine",
-          z = "StatusLine",
+  {
+    "nvim-lualine/lualine.nvim",
+    config = function()
+      local lualine = require('lualine')
+      lualine.setup({
+        options = {
+          theme = theme,
+          globalstatus = true,
+          always_divide_middle = false,
+          component_separators = "",
+          section_separators = "",
+          disabled_filetypes = {
+            statusline = { "neo-tree", "git", "fugitive", "toggleterm", "trouble" },
+            winbar = { "neo-tree", "DiffviewFiles", "git" },
+          },
         },
-        -- insert = {
-        --   a = { bg = colors.blue, fg = colors.orange },
-        --   b = "StatusLine",
-        --   c = "StatusLine",
-        --   x = "StatusLine",
-        --   y = "StatusLine",
-        --   z = "StatusLine",
-        -- }
-      },
-      globalstatus = true,
-      always_divide_middle = false,
-      component_separators = "",
-      section_separators = "",
-      disabled_filetypes = {
-        statusline = { "neo-tree", "git", "fugitive", "toggleterm", "trouble" },
-        winbar = { "neo-tree", "DiffviewFiles", "git" },
-      },
-    },
-    sections = {
-      lualine_a = { mode },
-      lualine_b = { cwd, branch, diff },
-      lualine_c = { diagnostics },
-      lualine_x = {
-        selectioncount,
-        searchcount,
-        macro,
-      },
-      lualine_y = { filetype },
-      lualine_z = { encoding, location, progress },
-    },
-    inactive_sections = {
-      lualine_a = {},
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {},
-    },
-  },
+        sections = {
+          lualine_a = { mode },
+          lualine_b = { cwd, branch },
+          lualine_c = { diff, diagnostics },
+          lualine_x = {
+            selectioncount,
+            searchcount,
+            macro,
+          },
+          lualine_y = { filetype, encoding },
+          lualine_z = { location, progress },
+        },
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = {},
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = {},
+        },
+      })
+    end
+  }
 }
