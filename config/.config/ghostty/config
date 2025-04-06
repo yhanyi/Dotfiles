@@ -4,8 +4,6 @@ font-size = 14
 cursor-style = block
 background-opacity = 0.8
 window-title-font-family = JetBrains Mono
-window-inherit-working-directory = false
-working-directory = home
 
 keybind = shift+left=previous_tab
 keybind = shift+right=next_tab
