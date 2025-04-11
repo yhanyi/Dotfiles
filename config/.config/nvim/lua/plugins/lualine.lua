@@ -63,24 +63,6 @@ local macro = {
     end
     return ""
   end,
-  color = "Visual",
-}
-
-local searchcount = {
-  "searchcount",
-  color = "Search",
-  -- fmt = function(s)
-  --   if s == "" or s == "[0/0]" then
-  --     return ""
-  --   end
-  --   local search_pattern = vim.fn.getreg("/")
-  --   return "SEARCH: " .. search_pattern .. " " .. s
-  -- end,
-}
-
-local selectioncount = {
-  "selectioncount",
-  color = "Visual",
 }
 
 local mode = { "mode" }
@@ -114,12 +96,8 @@ return {
           lualine_a = { mode },
           lualine_b = { cwd, branch },
           lualine_c = { diff, diagnostics },
-          lualine_x = {
-            selectioncount,
-            searchcount,
-            macro,
-          },
-          lualine_y = { filetype, encoding },
+          lualine_x = {},
+          lualine_y = { macro, filetype, encoding },
           lualine_z = { location, progress },
         },
         inactive_sections = {
