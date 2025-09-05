@@ -1,6 +1,6 @@
 theme = catppuccin-frappe
 font-family = JetBrains Mono
-font-size = 14
+font-size = 11
 cursor-style = block
 background-opacity = 0.8
 window-title-font-family = JetBrains Mono
