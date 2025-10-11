@@ -1,6 +1,7 @@
 # Path to KDB+/Q installation.
 export QHOME="~/q"
 alias q="QHOME=~/q rlwrap -r ~/q/m64/q"
+alias nvim="~/nvim-macos-arm64/bin/nvim"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
