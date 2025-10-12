@@ -36,6 +36,10 @@
       "rev": "572f566",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
+    "gitsigns.nvim": {
+      "rev": "1ee5c1f",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
     "lualine.nvim": {
       "rev": "b8c2315",
       "src": "https://github.com/nvim-lualine/lualine.nvim"
@@ -98,6 +102,10 @@
     "vague.nvim": {
       "rev": "27a19ff",
       "src": "https://github.com/vague2k/vague.nvim"
+    },
+    "vim-fugitive": {
+      "rev": "61b51c0",
+      "src": "https://github.com/tpope/vim-fugitive"
     }
   }
 }
