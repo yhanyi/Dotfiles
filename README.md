@@ -14,6 +14,7 @@ That's it, nothing else.
 
 ## Commands
 ```bash
+# Package installation.
 sudo apt update
 sudo apt install build-essential
 sudo apt install gdb
@@ -22,8 +23,15 @@ sudo apt install perf
 sudo apt install cmake
 sudo apt install ripgrep
 sudo apt install cargo
+
 # Set up git.
 # Set up nvim nightly build, install Linux version.
+
+# Set timezone. 
+sudo timedatectl set-timezone Asia/Singapore
+
+# C++ Libraries
+sudo apt install libboost-all-dev
 ```
 
 ## Symlinking
