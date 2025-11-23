@@ -1,11 +1,10 @@
 -- VIM OPTIONS
-vim.wo.relativenumber = true
-vim.o.number = true
 vim.o.swapfile = false
 vim.o.expandtab = true
 vim.o.tabstop = 2
 vim.o.softtabstop = 2
 vim.o.shiftwidth = 2
+vim.o.number = true
 vim.o.relativenumber = true
 vim.o.wrap = false
 vim.o.signcolumn = "yes"
@@ -247,14 +246,10 @@ require('nvim-treesitter').setup({
     "lua",
     "vim",
     "vimdoc",
-    "javascript",
-    "typescript",
     "python",
-    "java",
     "c",
     "cpp",
     "rust",
-    "go",
     "bash",
     "markdown",
     "markdown_inline",
@@ -479,7 +474,7 @@ require('lualine').setup({
 })
 
 -- NATIVE LSP SERVER
-vim.lsp.enable({ "clangd", "rust_analyzer", "lua_ls", "cmake", "pyright", "gopls" })
+vim.lsp.enable({ "clangd", "rust_analyzer", "lua_ls", "cmake", "pyright" })
 vim.diagnostic.config({
   virtual_lines = true,
   -- virtual_text = true,
@@ -522,28 +517,10 @@ vim.lsp.config('clangd', {
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--function-arg-placeholders",
-    -- "--fallback-style=llvm",
     "--query-driver=/usr/bin/g++-14",
-    -- "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
     "--all-scopes-completion",
     "--pch-storage=memory"
   },
-  -- root_dir = function(fname)
-  --   local root = require('lspconfig').util.root_pattern(
-  --     '.clangd',
-  --     '.clang-tidy',
-  --     '.clang-format',
-  --     'compile_commands.json',
-  --     'compile_flags.txt',
-  --     'configure.ac',
-  --     '.git'
-  --   )(fname)
-  --   if not root then
-  --     return vim.fn.expand('~')
-  --   end
-
-  --   return root
-  -- end,
   init_options = {
     usePlaceholders = true,
     completeUnimported = true,
@@ -566,22 +543,6 @@ vim.lsp.config('pyright', {
       }
     }
   }
-})
-
-vim.lsp.config('gopls', {
-  cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
-  root_dir = require('lspconfig').util.root_pattern("go.work", "go.mod", ".git"),
-  settings = {
-    gopls = {
-      analyses = {
-        unusedparams = true,
-      },
-      staticcheck = true,
-      usePlaceholders = true,
-      completeUnimported = true,
-    },
-  },
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {

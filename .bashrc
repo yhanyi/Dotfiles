@@ -85,9 +85,9 @@ alias l='ls -CF'
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+# if [ -f ~/.bash_aliases ]; then
+#     . ~/.bash_aliases
+# fi
 
 # enable programmable completion features
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -98,3 +98,7 @@ fi
 if [ -n "$SSH_CONNECTION" ]; then
     export TERM=xterm-256color
 fi
+
+alias nvim="/opt/nvim-nightly/bin/nvim"
+
+eval "$(starship init bash)"

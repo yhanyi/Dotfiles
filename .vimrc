@@ -19,16 +19,15 @@ filetype plugin indent on
 colorscheme catppuccin
 
 set showcmd
+set showmode
+set cursorline
 " set hidden
 " set wildmenu
-set showcmd
 " set hlsearch
 " set confirm
 " set visualbell
 " set ignorecase
 " set smartcase
-set showmode
-set cursorline
 
 function! StatuslineMode()
   let l:mode=mode()
