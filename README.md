@@ -4,10 +4,22 @@ Clean, minimalist set of configuration files for my Nanode (Ubuntu) cluster, mai
 
 ## Tools
 
-- vim
+- vim/nvim
 - tmux
 - cmake
 - gdb
 - perf
 
 That's it, nothing else.
+
+## Commands
+```bash
+sudo apt update
+sudo apt install build-essential
+sudo apt install gdb
+sudo apt install vim
+sudo apt install perf
+sudo apt install cmake
+# Set up git.
+# Set up nvim nightly build, install Linux version.
+```
