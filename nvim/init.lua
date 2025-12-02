@@ -512,6 +512,7 @@ vim.lsp.config('rust_analyzer', {
 vim.lsp.config('clangd', {
   cmd = {
     "/usr/bin/clangd",
+    "--compile-commands-dir=build",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
