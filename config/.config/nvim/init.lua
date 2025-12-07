@@ -97,21 +97,16 @@ local greetHeading = {
     hl = "String",
   },
 }
-dashboard.section.buttons.val = {
-  dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
-  dashboard.button("t", "  Find text", ":Telescope live_grep <CR>"),
-  dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
-  dashboard.button("q", "  Quit", ":qa<CR>"),
-}
+dashboard.section.buttons.val = {}
 dashboard.config.layout = {
-  { type = "padding", val = 2 },
+  { type = "padding", val = 10 },
   dashboard.section.header,
   { type = "padding", val = 2 },
   greetHeading,
-  { type = "padding", val = 2 },
-  dashboard.section.buttons,
-  { type = "padding", val = 2 },
-  dashboard.section.footer,
+  -- { type = "padding", val = 2 },
+  -- dashboard.section.buttons,
+  -- { type = "padding", val = 2 },
+  -- dashboard.section.footer,
 }
 alpha.setup(dashboard.opts)
 
@@ -583,7 +578,7 @@ vim.lsp.config('rust_analyzer', {
   settings = {
     ['rust_analyzer'] = {
       diagnostics = {
-        enable = false
+        enable = true
       }
     }
   }
@@ -591,14 +586,14 @@ vim.lsp.config('rust_analyzer', {
 
 vim.lsp.config('clangd', {
   cmd = {
-    "/opt/homebrew/opt/llvm/bin/clangd",
+    "/opt/homebrew/bin/clangd",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--function-arg-placeholders",
     "--fallback-style=llvm",
-    "--query-driver=/opt/homebrew/opt/llvm/bin/clang++",
+    "--query-driver=/opt/homebrew/bin/g++-15",
     "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
     "--all-scopes-completion",
     "--pch-storage=memory"
