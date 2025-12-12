@@ -586,7 +586,7 @@ vim.lsp.config('rust_analyzer', {
 
 vim.lsp.config('clangd', {
   cmd = {
-    "/opt/homebrew/bin/clangd",
+    "/opt/homebrew/opt/llvm/bin/clangd",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
