@@ -1,8 +1,8 @@
 # Path to KDB+/Q installation.
-export QHOME="~/q"
-alias q="QHOME=~/q rlwrap -r ~/q/m64/q"
+export QHOME="~/.q"
+alias q="QHOME=~/.q rlwrap -r ~/.q/m64/q"
 alias nvim="~/nvim-macos-arm64/bin/nvim"
-
+alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -105,29 +105,19 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# LLVM and C++ configuration
-export LLVM_PATH="/opt/homebrew/opt/llvm"
-export PATH="$LLVM_PATH/bin:$PATH"
+# LLVM compiler (clang).
+# export LLVM_PATH="/opt/homebrew/opt/llvm"
+# export PATH="$LLVM_PATH/bin:$PATH"
+# export CC="$LLVM_PATH/bin/clang"
+# export CXX="$LLVM_PATH/bin/clang++"
+# export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
+# export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
 
-# Force use of LLVM/Clang instead of system GCC
-export CC="$LLVM_PATH/bin/clang"
-export CXX="$LLVM_PATH/bin/clang++"
-export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
-export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
-
-# Include and library paths
-export CPATH="$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
-export LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
-export LD_LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
-export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
-
-# Enhanced C++ compilation alias using clang++
-alias clang17'clang++ -std=c++17 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
-# alias g++20='env -u CPATH -u CPLUS_INCLUDE_PATH -u LIBRARY_PATH -u LD_LIBRARY_PATH /opt/homebrew/bin/g++-15 -std=c++20 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
-# alias g++23='env -u CPATH -u CPLUS_INCLUDE_PATH -u LIBRARY_PATH -u LD_LIBRARY_PATH /opt/homebrew/bin/g++-15 -std=c++23 -Wall -Wextra -Wshadow -Wconversion -Wcast-qual -Wcast-align -Wno-unused-result'
-
-# LSP configuration for nvim
-export CLANGD_PATH="$LLVM_PATH/bin/clangd"
+# GCC compiler (gcc/g++).
+export CC="/opt/homebrew/bin/gcc-15"
+export CXX="/opt/homebrew/bin/g++-15"
+export CMAKE_C_COMPILER="/opt/homebrew/bin/gcc-15"
+export CMAKE_CXX_COMPILER="/opt/homebrew/bin/g++-15"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
