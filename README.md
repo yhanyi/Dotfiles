@@ -1,6 +1,6 @@
 # Dotfiles (Ubuntu)
 
-Clean, minimalist set of configuration files for my Nanode (Ubuntu) cluster, mainly doing projects in C++23.
+Clean, minimalist set of configuration files for my Nanode (Ubuntu) cluster.
 
 ## Tools
 
@@ -9,8 +9,7 @@ Clean, minimalist set of configuration files for my Nanode (Ubuntu) cluster, mai
 - cmake
 - gdb
 - perf
-
-That's it, nothing else.
+- cargo
 
 ## Commands
 ```bash
@@ -40,4 +39,11 @@ ln -s ~/Dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/Dotfiles/.vimrc ~/.vimrc
 ln -s ~/Dotfiles/.bashrc ~/.bashrc
 ln -s ~/Dotfiles/starship.toml ~/.config/starship.toml
+```
+
+## tmux
+```bash
+tmux new-session -s <name>      # Create new session (workspace).
+Ctrl+b c                        # Create new window (tab).
+Ctrl+b %/"                      # Split panes vertically/horizontally.
 ```
