@@ -6,13 +6,12 @@ vim.o.expandtab = true
 vim.o.tabstop = 2
 vim.o.softtabstop = 2
 vim.o.shiftwidth = 2
-vim.o.relativenumber = true
+vim.o.number = true
 vim.o.wrap = false
 vim.o.signcolumn = "yes"
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.opt.clipboard = "unnamedplus"
-vim.o.swapfile = false
 
 -- NATIVE PACKAGE MANAGER
 vim.pack.add({
@@ -103,10 +102,6 @@ dashboard.config.layout = {
   dashboard.section.header,
   { type = "padding", val = 2 },
   greetHeading,
-  -- { type = "padding", val = 2 },
-  -- dashboard.section.buttons,
-  -- { type = "padding", val = 2 },
-  -- dashboard.section.footer,
 }
 alpha.setup(dashboard.opts)
 
@@ -243,14 +238,14 @@ require('nvim-treesitter').setup({
     "lua",
     "vim",
     "vimdoc",
-    "javascript",
-    "typescript",
     "python",
-    "java",
-    "c",
     "cpp",
     "rust",
+    "c",
     "go",
+    "java",
+    "typescript",
+    "javascript",
     "bash",
     "markdown",
     "markdown_inline",
@@ -587,33 +582,20 @@ vim.lsp.config('rust_analyzer', {
 vim.lsp.config('clangd', {
   cmd = {
     "/opt/homebrew/opt/llvm/bin/clangd",
+    -- "/usr/bin/clangd",
+    "--fallback-style=llvm",
+    "--query-driver=/opt/homebrew/bin/g++-15",
+    -- "--query-driver=/usr/bin/g++-14",
+    "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
+    -- "--compile-commands-dir=build",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--function-arg-placeholders",
-    "--fallback-style=llvm",
-    "--query-driver=/opt/homebrew/bin/g++-15",
-    "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
     "--all-scopes-completion",
     "--pch-storage=memory"
   },
-  -- root_dir = function(fname)
-  --   local root = require('lspconfig').util.root_pattern(
-  --     '.clangd',
-  --     '.clang-tidy',
-  --     '.clang-format',
-  --     'compile_commands.json',
-  --     'compile_flags.txt',
-  --     'configure.ac',
-  --     '.git'
-  --   )(fname)
-  --   if not root then
-  --     return vim.fn.expand('~')
-  --   end
-
-  --   return root
-  -- end,
   init_options = {
     usePlaceholders = true,
     completeUnimported = true,
