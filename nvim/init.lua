@@ -569,25 +569,16 @@ vim.diagnostic.config({
   },
 })
 
-vim.lsp.config('rust_analyzer', {
-  settings = {
-    ['rust_analyzer'] = {
-      diagnostics = {
-        enable = true
-      }
-    }
-  }
-})
+-- Customise clangd based on OS.
+-- List of OS: unix, win16, win32, win64, in32unix, win95, mac, macunix, amiga, os2, beos, vms.
+local clangd_cmd = {}
 
-vim.lsp.config('clangd', {
-  cmd = {
+if vim.fn.has('macunix') == 1 then
+  clangd_cmd = {
     "/opt/homebrew/opt/llvm/bin/clangd",
-    -- "/usr/bin/clangd",
     "--fallback-style=llvm",
     "--query-driver=/opt/homebrew/bin/g++-15",
-    -- "--query-driver=/usr/bin/g++-14",
     "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
-    -- "--compile-commands-dir=build",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
@@ -595,7 +586,38 @@ vim.lsp.config('clangd', {
     "--function-arg-placeholders",
     "--all-scopes-completion",
     "--pch-storage=memory"
-  },
+  }
+elseif vim.fn.has('unix') == 1 then
+  clangd_cmd = {
+    "/usr/bin/clangd",
+    "--fallback-style=llvm",
+    "--query-driver=/usr/bin/g++-14",
+    "--compile-commands-dir=build",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--all-scopes-completion",
+    "--pch-storage=memory"
+  }
+else
+  clangd_cmd = {
+    "clangd",
+    "--fallback-style=llvm",
+    "--query-driver=/usr/bin/g++-15",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--all-scopes-completion",
+    "--pch-storage=memory"
+  }
+end
+
+vim.lsp.config('clangd', {
+  cmd = clangd_cmd,
   init_options = {
     usePlaceholders = true,
     completeUnimported = true,
@@ -606,6 +628,16 @@ vim.lsp.config('clangd', {
 vim.lsp.config('cmake', {
   filetypes = { "CMakeLists.txt" },
   root_dir = require('lspconfig').util.root_pattern("CMakeLists.txt", ".git"),
+})
+
+vim.lsp.config('rust_analyzer', {
+  settings = {
+    ['rust_analyzer'] = {
+      diagnostics = {
+        enable = true
+      }
+    }
+  }
 })
 
 vim.lsp.config('pyright', {
