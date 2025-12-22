@@ -1,8 +1,3 @@
-# Path to KDB+/Q installation.
-export QHOME="~/.q"
-alias q="QHOME=~/.q rlwrap -r ~/.q/m64/q"
-alias nvim="~/nvim-macos-arm64/bin/nvim"
-alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -105,19 +100,29 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# KDB+/Q path.
+export QHOME="~/.q"
+alias q="QHOME=~/.q rlwrap -r ~/.q/m64/q"
+
+# Neovim nightly build.
+alias nvim="~/nvim/bin/nvim"
+
+# iCloud folder alias.
+alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
+
 # LLVM compiler (clang).
-# export LLVM_PATH="/opt/homebrew/opt/llvm"
-# export PATH="$LLVM_PATH/bin:$PATH"
-# export CC="$LLVM_PATH/bin/clang"
-# export CXX="$LLVM_PATH/bin/clang++"
-# export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
-# export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
+export LLVM_PATH="/opt/homebrew/opt/llvm"
+export PATH="$LLVM_PATH/bin:$PATH"
+export CC="$LLVM_PATH/bin/clang"
+export CXX="$LLVM_PATH/bin/clang++"
+export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
+export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
 
 # GCC compiler (gcc/g++).
-export CC="/opt/homebrew/bin/gcc-15"
-export CXX="/opt/homebrew/bin/g++-15"
-export CMAKE_C_COMPILER="/opt/homebrew/bin/gcc-15"
-export CMAKE_CXX_COMPILER="/opt/homebrew/bin/g++-15"
+# export CC="/opt/homebrew/bin/gcc-15"
+# export CXX="/opt/homebrew/bin/g++-15"
+# export CMAKE_C_COMPILER="/opt/homebrew/bin/gcc-15"
+# export CMAKE_CXX_COMPILER="/opt/homebrew/bin/g++-15"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
