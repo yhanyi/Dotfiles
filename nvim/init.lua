@@ -585,17 +585,16 @@ local clangd_cmd = {}
 if vim.fn.has('macunix') == 1 then
   clangd_cmd = {
     "/opt/homebrew/opt/llvm/bin/clangd",
-    "--fallback-style=llvm",
-    -- "--query-driver=/opt/homebrew/bin/g++-15",
-    "--query-driver=/opt/homebrew/lib/clang++",
-    "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--function-arg-placeholders",
+    "--fallback-style=llvm",
+    "--query-driver=/opt/homebrew/opt/llvm/bin/clang++",
+    "--compile-commands-dir=" .. vim.fn.expand("~/.cpp_compile_commands"),
     "--all-scopes-completion",
-    "--pch-storage=memory"
+    "--pch-storage=memory",
   }
 elseif vim.fn.has('unix') == 1 then
   clangd_cmd = {

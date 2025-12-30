@@ -111,18 +111,23 @@ alias nvim="~/nvim/bin/nvim"
 alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
 
 # LLVM compiler (clang).
-# export LLVM_PATH="/opt/homebrew/opt/llvm"
-# export PATH="$LLVM_PATH/bin:$PATH"
-# export CC="$LLVM_PATH/bin/clang"
-# export CXX="$LLVM_PATH/bin/clang++"
-# export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
-# export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
+export LLVM_PATH="/opt/homebrew/opt/llvm"
+export PATH="$LLVM_PATH/bin:$PATH"
+export CC="$LLVM_PATH/bin/clang"
+export CXX="$LLVM_PATH/bin/clang++"
+export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
+export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
+export CPATH="$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
+export LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
+export LD_LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
+export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
+export CLANGD_PATH="$LLVM_PATH/bin/clangd"
 
 # GCC compiler (gcc/g++).
-export CC="/opt/homebrew/bin/gcc-15"
-export CXX="/opt/homebrew/bin/g++-15"
-export CMAKE_C_COMPILER="/opt/homebrew/bin/gcc-15"
-export CMAKE_CXX_COMPILER="/opt/homebrew/bin/g++-15"
+# export CC="/opt/homebrew/bin/gcc-15"
+# export CXX="/opt/homebrew/bin/g++-15"
+# export CMAKE_C_COMPILER="/opt/homebrew/bin/gcc-15"
+# export CMAKE_CXX_COMPILER="/opt/homebrew/bin/g++-15"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
