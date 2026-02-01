@@ -17,6 +17,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 sudo apt install neovim
 sudo apt install tmux
 curl -sS https://starship.rs/install.sh | sh
+
 # Git
 git config --global user.name "<name>"
 git config --global user.email "<email>"
@@ -24,4 +25,18 @@ ssh-keygen -t ed25519 -C "<email>"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cat ~/.ssh/id_ed25519.pub
+```
+
+## MacOS
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+## Vim
+
+```bash
+gg              # Start of file.
+G               # End of file.
+:%s/old/new/g   # Replace all.
 ```

@@ -676,3 +676,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
 vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Enable yanking over ssh on OSC52-compatible terminal client',
+  callback = function()
+    local copy_to_unnamedplus = require('vim.ui.clipboard.osc52').copy '+'
+    copy_to_unnamedplus(vim.v.event.regcontents)
+    local copy_to_unnamed = require('vim.ui.clipboard.osc52').copy '*'
+    copy_to_unnamed(vim.v.event.regcontents)
+  end,
+})
