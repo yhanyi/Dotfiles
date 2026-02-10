@@ -14,6 +14,8 @@ set number
 set relativenumber
 set mouse+=a
 set clipboard=unnamedplus
+set splitright
+set splitbelow
 filetype plugin indent on
 
 set showcmd

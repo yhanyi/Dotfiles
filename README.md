@@ -32,11 +32,3 @@ cat ~/.ssh/id_ed25519.pub
 ```bash
 curl -fsSL https://claude.ai/install.sh | bash
 ```
-
-## Vim
-
-```bash
-gg              # Start of file.
-G               # End of file.
-:%s/old/new/g   # Replace all.
-```
