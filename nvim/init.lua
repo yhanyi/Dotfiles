@@ -614,7 +614,7 @@ else
   clangd_cmd = {
     "clangd",
     "--fallback-style=llvm",
-    "--query-driver=/usr/bin/g++-15",
+    "--query-driver=/usr/bin/g++-14",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
