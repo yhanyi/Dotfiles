@@ -32,3 +32,9 @@ cat ~/.ssh/id_ed25519.pub
 ```bash
 curl -fsSL https://claude.ai/install.sh | bash
 ```
+
+## Notes
+
+- Use [nightly nvim](https://github.com/neovim/neovim/releases).
+- Use [Geist Mono](https://www.nerdfonts.com/font-downloads).
+- On MacOS, set up UTM with Ubuntu for Linux development.
