@@ -105,9 +105,6 @@ source $ZSH/oh-my-zsh.sh
 export QHOME="~/.q"
 alias q="QHOME=~/.q rlwrap -r ~/.q/m64/q"
 
-# Neovim nightly build.
-alias nvim="~/nvim/bin/nvim"
-
 # iCloud folder alias.
 alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
 
@@ -124,11 +121,9 @@ export LD_LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
 export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
 export CLANGD_PATH="$LLVM_PATH/bin/clangd"
 
-# GCC compiler (gcc/g++).
-# export CC="/opt/homebrew/bin/gcc-15"
-# export CXX="/opt/homebrew/bin/g++-15"
-# export CMAKE_C_COMPILER="/opt/homebrew/bin/gcc-15"
-# export CMAKE_CXX_COMPILER="/opt/homebrew/bin/g++-15"
+# Ollama configs.
+export OLLAMA_HOST=http://127.0.0.1:11434
+export OLLAMA_ORIGINS=*
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
