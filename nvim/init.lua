@@ -1,19 +1,4 @@
--- VIM OPTIONS
-vim.wo.relativenumber = true
-vim.o.number = true
-vim.o.swapfile = false
-vim.o.expandtab = true
-vim.o.tabstop = 2
-vim.o.softtabstop = 2
-vim.o.shiftwidth = 2
-vim.o.number = true
-vim.o.wrap = false
-vim.o.signcolumn = "yes"
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
-vim.opt.clipboard = "unnamedplus"
-
--- NATIVE PACKAGE MANAGER
+-- Plugins.
 vim.pack.add({
   { src = "https://github.com/folke/tokyonight.nvim" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
@@ -41,11 +26,31 @@ vim.pack.add({
   { src = "https://github.com/hrsh7th/nvim-cmp" },
 })
 
--- TOKYONIGHT THEME
+-- Options.
+vim.wo.relativenumber = true
+vim.o.number = true
+vim.o.swapfile = false
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.softtabstop = 2
+vim.o.shiftwidth = 2
+vim.o.number = true
+vim.o.wrap = false
+vim.o.signcolumn = "yes"
+vim.o.autocomplete = true
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+vim.opt.clipboard = "unnamedplus"
+vim.opt.complete:append('o')
+vim.opt.completeopt = { 'menuone', 'noselect' }
+-- vim.o.pumheight = 5
+-- vim.o.pumborder = 'rounded'
+
+-- Theme.
 require("tokyonight").setup({})
 vim.cmd.colorscheme("tokyonight")
 
--- DASHBOARD
+-- Dashboard.
 local alpha, dashboard = require('alpha'), require('alpha.themes.dashboard')
 local logo = {
   "⡿⢋⣠⠆⠀⠃⠅⠄⡴⢿⣿⣿⣿⣿⣿⣿⡿⠯⡉⠐⠪⣄⠀⠹⣆⢳⣶⣍⡻⣦⠈⠰⣄⡀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -108,10 +113,7 @@ local greeting = getGreeting(userName)
 local greetHeading = {
   type = "text",
   val = greeting,
-  opts = {
-    position = "center",
-    hl = "String",
-  },
+  opts = { position = "center", hl = "String", },
 }
 dashboard.section.buttons.val = {}
 dashboard.config.layout = {
@@ -122,14 +124,14 @@ dashboard.config.layout = {
 }
 alpha.setup(dashboard.opts)
 
--- BRACKET AUTOCLOSE
+-- Bracket autoclose.
 require('autoclose').setup()
 
--- OIL FILE EXPLORER
+-- Oil file explorer.
 require("oil").setup()
 vim.keymap.set('n', '<C-n>', ':Oil --float<CR>')
 
--- CONFORM FORMATTER
+-- Conform formatter.
 require('conform').setup({
   formatters_by_ft = {
     lua = { "stylua" },
@@ -186,7 +188,7 @@ end, { desc = "Toggle format on save", bang = true })
 --   vim.cmd("FormatToggle!")
 -- end, { desc = "Toggle format on save globally" })
 
--- GITSIGNS
+-- Gitsigns.
 require('gitsigns').setup()
 vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", {})
 vim.keymap.set("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", {})
@@ -248,7 +250,7 @@ require('bufferline').setup({
   },
 })
 
--- TREESITTER
+-- Treesitter.
 require('nvim-treesitter').setup({
   ensure_installed = {
     "lua",
@@ -276,7 +278,7 @@ require('nvim-treesitter').setup({
   }
 })
 
--- TELESCOPE
+-- Telescope.
 require('telescope').setup({
   defaults = {
     vimgrep_arguments = {
@@ -368,7 +370,7 @@ require('cmp').setup({
   }),
 })
 
--- DISCORD
+-- Discord presence.
 local cord_handlers = {
   ["cpp"] = function(opts)
     return "Optimising " .. opts.filename
