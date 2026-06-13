@@ -93,12 +93,3 @@ alias l='ls -CF'
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-
-# HAN YI'S NEW CONFIGS
-if [ -n "$SSH_CONNECTION" ]; then
-    export TERM=xterm-256color
-fi
-
-alias nvim="/opt/nvim-nightly/bin/nvim"
-
-eval "$(starship init bash)"

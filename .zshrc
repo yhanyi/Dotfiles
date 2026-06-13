@@ -101,6 +101,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Check if running over SSH, then set terminal type.
+if [ -n "$SSH_CONNECTION" ]; then
+    export TERM=xterm-256color
+fi
+
+# Alias to neovim.
+alias vim="nvim"
+alias vi="nvim"
+
 # KDB+/Q path.
 export QHOME="~/.q"
 alias q="QHOME=~/.q rlwrap -r ~/.q/m64/q"
