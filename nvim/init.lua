@@ -1,8 +1,26 @@
 -- Han Yi's NeoVim Config.
 
+-- Plugins.
+vim.pack.add({
+  { src = "https://github.com/folke/tokyonight.nvim" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/stevearc/oil.nvim" },
+  { src = "https://github.com/nvim-tree/nvim-web-devicons" },
+  { src = "https://github.com/goolord/alpha-nvim" },
+  { src = "https://github.com/akinsho/bufferline.nvim" },
+  { src = "https://github.com/rcarriga/nvim-dap-ui" },
+  { src = "https://github.com/nvim-neotest/nvim-nio" },
+  { src = "https://github.com/mfussenegger/nvim-dap" },
+  { src = "https://github.com/nvim-lualine/lualine.nvim" },
+  { src = "https://github.com/lewis6991/gitsigns.nvim" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/nvim-lua/plenary.nvim" },
+  { src = "https://github.com/nvim-telescope/telescope.nvim" },
+  { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
+})
+
 -- Theme.
 require("tokyonight").setup({})
--- require("tokyonight").setup({ style = "storm|moon|night|day" })
 vim.cmd.colorscheme("tokyonight")
 vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "None" })
@@ -57,22 +75,56 @@ vim.opt.signcolumn = "yes"              -- Show sign column.
 vim.g.mapleader = " "                   -- Set leader key to space.
 vim.g.maplocalleader = " "              -- Set local leader key.
 
--- File navigation.
-vim.g.netrw_banner = 0                  -- Disable netrw banner.
-vim.keymap.set('n', '<C-n>', ':Ex<CR>', { desc = "Open file explorer" })
-vim.keymap.set('n', '<leader>ff', ':find ', { desc = "Find file" })
+-- Dashboard.
+local alpha, dashboard = require('alpha'), require('alpha.themes.dashboard')
+local logo = {
+  "⡿⢋⣠⠆⠀⠃⠅⠄⡴⢿⣿⣿⣿⣿⣿⣿⡿⠯⡉⠐⠪⣄⠀⠹⣆⢳⣶⣍⡻⣦⠈⠰⣄⡀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⣨⣄⠚⠀⠈⣴⠀⣰⣿⣿⣿⣿⣿⣷⣶⣥⣀⠛⠷⣮⣄⠁⡀⠘⢦⠙⢿⣿⣮⡀⠀⠙⠿⠦⢢⠀⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣼⣟⠅⠈⠀⠀⠘⣇⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⡑⢝⢦⡀⠈⢧⢳⡜⣿⣿⣆⠀⠀⠀⠀⠀⠈⠙⠛⠻⠿⠿⢿⣿⣿⣟⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣃⡔⡁⠁⠀⠀⠹⡎⢮⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⢀⠀⠙⡄⠈⢇⠻⡜⣿⣿⣷⡀⢄⠀⠀⡀⠀⠀⠤⠐⢂⠀⣀⣤⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣾⣿⣆⡅⢠⡦⢣⢠⠹⡔⣭⣛⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⣧⡹⣄⠊⠀⠈⡎⢔⢹⣿⣿⣿⡆⠳⠀⠢⡉⠱⣖⠩⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣻⣿⣿⣧⠸⣆⠆⢀⢂⡘⡜⣿⣿⣿⣿⣿⡿⢿⣻⠓⡀⠻⢏⠟⡜⣆⡅⠀⠸⡀⠊⢻⣿⣿⣿⡆⠀⠀⠘⣦⡀⠙⠶⣭⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣿⣿⣿⢀⠙⠸⠄⠀⢳⡙⢜⣻⣡⣌⢿⡙⣆⡻⢷⡷⡡⢘⠣⡪⠘⣿⡄⠀⢃⠎⢄⢿⣿⣿⣿⡄⠀⠀⡈⣿⠇⡴⠀⠄⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣿⣿⠏⡄⠄⣧⣴⢠⠠⠊⡎⠻⢛⣬⡊⢿⡄⣿⣷⡌⡀⢆⠀⢁⠡⢹⣿⡄⠘⡸⠈⡜⣿⣿⣿⣿⠄⠀⠀⢸⠀⠇⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣿⠣⡆⡇⠀⠻⠸⢀⢵⡀⠙⣶⡕⠙⢿⣿⣿⣾⣿⣿⡆⠘⡄⢢⡌⠜⡝⣷⡀⠇⡇⢠⢻⣿⣿⣿⡈⠀⠡⢰⡄⢀⡄⢷⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣿⢰⢱⠳⠀⢀⣷⠈⡜⣧⡠⡈⠻⣮⡪⡻⣿⣿⣿⣿⣿⠀⡇⠂⡇⡎⠐⠘⢇⢸⢀⠀⢸⣿⣿⣿⡇⠠⠀⠼⠁⣼⠁⠘⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣿⠘⡿⡸⡱⠈⣿⡄⠸⡜⠳⡙⠦⡈⠻⣬⡢⢝⠿⣿⣿⡇⢙⡀⢡⢲⣆⠀⠈⠈⠘⠸⡇⣿⣿⣿⣧⠀⠀⡇⢰⠏⠈⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣿⣿⠀⢁⢧⠃⢃⢹⣷⠀⠻⣆⠙⣤⢹⡕⣤⣙⠻⠿⡟⣡⠂⡀⢡⡆⠗⠎⠃⠀⠀⢀⠀⠇⣿⣿⣿⣿⠀⢰⠀⢠⠄⠃⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⢿⣿⠃⠂⠈⡆⡐⢢⠩⣄⠀⠘⣦⡈⢿⣿⣮⣿⣿⣿⡇⡟⠀⠁⠀⠀⠀⠀⠀⡀⠀⠘⠀⢀⣿⣿⣿⣿⠀⡎⠀⠌⠘⣀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⡊⠻⡱⡁⠀⠀⠀⠈⢶⡙⢆⠀⠈⢿⣦⡁⡙⢿⣿⣿⠱⠁⠀⠀⠀⠀⠀⠀⠀⢁⠀⡄⠁⠘⢫⡿⣟⣿⠀⠀⣇⠔⢀⡜⡀⡀⠙⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⣷⡠⠀⠚⠃⠁⠀⠀⠀⠉⠑⠁⠀⢁⠈⠻⠾⠄⣬⣅⠈⢀⡵⠀⠠⠗⢓⣀⣰⡿⠀⡇⢀⢡⡿⢰⢸⡃⠰⠀⠆⢠⢸⡆⢱⢹⣦⣈⣛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⢤⣀⠀⢴⡿⣄⠀⠀⠀⢀⠀⠄⠐⣝⠳⠶⠄⣁⣙⣤⣼⠿⠛⠛⠉⡜⠁⠆⡄⡸⢃⢂⡞⢁⡏⡄⡇⠀⢰⢠⣿⡰⡙⣏⢮⣛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠢⠈⠙⠶⣦⠌⢛⣃⣠⣘⣉⣶⣶⣶⣿⣿⡖⣿⣟⣭⣼⣷⣶⣶⣦⣦⣡⣇⡸⠀⠁⢁⠞⡐⡼⡰⣰⠃⢀⠇⣿⣿⣧⢹⢃⠷⣝⡻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⡧⡀⠂⠢⠐⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢩⢻⣿⣿⣿⣿⣿⣿⣿⣿⡄⢡⣞⠁⡁⡰⣰⡵⢣⠛⠠⠐⣼⣿⣿⡷⡡⡑⡑⢶⣭⣥⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⡆⠀⢕⠂⠄⠉⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠰⡏⢗⣽⣿⣿⣿⣿⣿⣿⣿⡇⢈⡔⡄⠀⢡⡿⡡⠋⠆⠀⡜⣿⣿⣿⣤⠱⣝⢌⢶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⢿⣦⡀⠀⠊⠑⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣿⣿⣿⣿⠿⠟⢉⣿⡏⣴⢟⡼⠡⣠⣿⡗⢳⡌⡠⡾⣣⣾⣿⢿⠇⠐⢽⣧⡝⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⢿⣯⡇⠢⢀⠈⠻⢷⣜⠻⣿⣿⣿⣿⣿⠻⠿⠿⠛⢛⠉⡕⣠⣾⣿⣿⣿⢋⠞⠁⢀⠼⢟⠌⡞⣸⡿⢿⣿⣿⡿⡜⠐⢸⣄⢌⠻⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠈⠁⠀⠀⠀⠀⠉⠉⠙⠒⠉⠛⠿⣿⣿⣷⡘⡼⠘⠄⣴⣿⣿⣿⡿⡑⣡⠔⢠⠟⣵⠊⢨⠃⠟⣬⣿⣡⡟⡡⠀⠆⣬⢶⢊⢣⡹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠑⠀⠊⠼⣿⣿⡿⠋⢈⠾⠋⢀⡤⠞⣡⠎⡞⢰⠞⠋⢋⣿⣾⠃⠌⢠⣽⣆⢝⢿⣿⡜⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠠⠄⢀⡈⠁⠁⠈⠉⠉⠁⠛⠒⠀⢀⡀⠀⠀⠀⠀⠀⠈⠀⠂⠀⠄⣒⣒⢍⠕⠀⡾⠃⠀⡇⠀⣴⣵⣿⣿⠃⠊⣰⣟⢻⣿⣮⣦⡻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠀⠀⠉⠣⢀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠢⢀⠀⠀⣤⠀⡀⠀⠀⠀⡄⠔⡥⠐⡱⠁⠀⢀⡷⢛⣿⠟⠁⡎⡠⣺⣿⡘⠯⡯⣿⣿⣿⣎⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠀⠀⠀⠀⠀⠙⠆⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠈⠀⠚⠁⣀⠌⠀⠀⠀⠐⠀⠀⡠⡀⠱⠊⠀⠀⠊⠀⠁⡙⠜⢇⠐⢬⣊⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠡⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠰⠁⡐⠑⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠈⠣⢪⣛⣿⣦⣍⣛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠈⠀⠁⠐⠀⣀⣁⠀⠀⣀⠀⠀⠀⠂⠀⠀⠈⠢⣄⠨⠭⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠴⢾⣿⡄⠉⢳⡄⡀⠐⢶⣅⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+}
+dashboard.section.header.val = logo
+dashboard.section.buttons.val = {}
+dashboard.config.layout = {
+  { type = "padding", val = 15 },
+  dashboard.section.header,
+  { type = "padding", val = 15 },
+}
+alpha.setup(dashboard.opts)
 
--- Buffer navigation.
-vim.keymap.set('n', '<Tab>', ':bnext<CR>')
-vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>')
-vim.keymap.set('n', '<leader>x', ':bdelete!<CR>')
-vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>')
+-- Oil file explorer.
+require("oil").setup()
+vim.keymap.set('n', '<C-n>', ':Oil --float<CR>')
 
--- Tab navigation.
-vim.opt.showtabline = 1                 -- Always show tabline.
-vim.opt.tabline = ''                    -- Use default tabline.
-vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = "New tab" })
-vim.keymap.set('n', '<leader>tx', ':tabclose<CR>', { desc = "Close tab" })
+-- Gitsigns.
+require('gitsigns').setup()
+vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", {})
+vim.keymap.set("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", {})
 
 -- Window navigation.
 vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", { desc = "Split window vertically" })
@@ -81,6 +133,65 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to top window" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
+
+-- BUFFERLINE --
+vim.keymap.set('n', '<Tab>', ':bnext<CR>')
+vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>')
+vim.keymap.set('n', '<leader>x', ':bdelete!<CR>')
+vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>')
+require('bufferline').setup({
+  options = {
+    mode = 'buffers', -- set to "tabs" to only show tabpages instead
+    themable = true,  -- allows highlight groups to be overriden i.e. sets highlights as default
+    numbers = 'none', -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
+    buffer_close_icon = '✗',
+    close_icon = '✗',
+    path_components = 1, -- Show only the file name without the directory
+    modified_icon = '●',
+    left_trunc_marker = '',
+    right_trunc_marker = '',
+    max_name_length = 30,
+    max_prefix_length = 30, -- prefix used when a buffer is de-duplicated
+    tab_size = 20,
+    diagnostics = false,
+    diagnostics_update_in_insert = false,
+    color_icons = true,
+    show_buffer_icons = true,
+    show_buffer_close_icons = true,
+    show_close_icon = true,
+    persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
+    separator_style = { '│', '│' }, -- | "thick" | "thin" | { 'any', 'any' },
+    enforce_regular_tabs = true,
+    always_show_bufferline = true,
+    show_tab_indicators = false,
+    indicator = {
+      -- icon = '▎', -- this should be omitted if indicator style is not 'icon'
+      style = 'none', -- Options: 'icon', 'underline', 'none'
+    },
+    icon_pinned = '󰐃',
+    -- minimum_padding = 1,
+    -- maximum_padding = 5,
+    -- maximum_length = 15,
+    sort_by = 'insert_at_end',
+    custom_filter = function(buf_number, buf_numbers)
+      return vim.fn.bufname(buf_number) ~= ''
+    end
+  },
+  highlights = {
+    separator = {
+      fg = '#434C5E',
+    },
+    buffer_selected = {
+      bold = true,
+      italic = false,
+    },
+    -- separator_selected = {},
+    -- tab_selected = {},
+    -- background = {},
+    -- indicator_selected = {},
+    -- fill = {},
+  },
+})
 
 -- Floating terminal.
 local terminal_state = {
@@ -98,7 +209,7 @@ vim.keymap.set("t", "<Esc>",
   end,
   { noremap = true, silent = true, desc = "Close floating terminal from terminal mode" })
 
-vim.keymap.set("n", "<leader>t", 
+vim.keymap.set("n", "<leader>t",
   function()
     -- Close terminal if it is already open.
     if terminal_state.is_open and vim.api.nvim_win_is_valid(terminal_state.win) then
@@ -161,6 +272,217 @@ vim.keymap.set("n", "<leader>t",
   end,
   { noremap = true, silent = true, desc = "Toggle floating terminal" })
 
+-- Treesitter.
+require('nvim-treesitter').setup({
+  ensure_installed = {
+    "lua",
+    "vim",
+    "vimdoc",
+    "python",
+    "cpp",
+    "rust",
+    "c",
+    "java",
+    "typst",
+    "typescript",
+    "javascript",
+    "bash",
+    "markdown",
+    "markdown_inline",
+  },
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+    use_languagetree = true,
+  },
+  indent = {
+    enable = true,
+  }
+})
+
+-- Telescope.
+require('telescope').setup({
+  defaults = {
+    vimgrep_arguments = {
+      "rg",
+      "-L",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+    },
+    prompt_prefix = "   ",
+    selection_caret = "  ",
+    entry_prefix = "  ",
+    initial_mode = "insert",
+    selection_strategy = "reset",
+    sorting_strategy = "ascending",
+    layout_strategy = "horizontal",
+    layout_config = {
+      horizontal = {
+        prompt_position = "top",
+        preview_width = 0.55,
+        results_width = 0.8,
+      },
+      vertical = {
+        mirror = false,
+      },
+      width = 0.87,
+      height = 0.80,
+      preview_cutoff = 120,
+    },
+    file_sorter = require("telescope.sorters").get_fuzzy_file,
+    file_ignore_patterns = { "node_modules" },
+    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    path_display = { "truncate" },
+    winblend = 0,
+    border = {},
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    color_devicons = true,
+    set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+    file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+    -- Developer configurations: Not meant for general override
+    buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
+    mappings = {
+      n = { ["q"] = require("telescope.actions").close },
+    },
+  },
+  pickers = {},
+  extensions = {
+    "themes",
+    "terms",
+    "noice",
+    ['ui-select'] = {
+      require('telescope.themes').get_dropdown {}
+    }
+  },
+})
+vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = 'Find text' })
+vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', { desc = 'Find buffers' })
+vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = 'Find help' })
+
+-- Dap Debugger.
+local dap, dapui = require('dap'), require('dapui')
+dap.listeners.before.attach.dapui_config = function() dapui.open() end
+dap.listeners.before.launch.dapui_config = function() dapui.open() end
+dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
+dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
+vim.keymap.set('n', '<Leader>dt', function() dap.toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>dc', function() dap.continue() end)
+
+-- Lualine.
+local colours = {
+  black  = '#080808',
+  white  = '#ebdbb2',
+  red    = '#dc4a4c',
+  green  = '#9ece69',
+  yellow = '#fe8019',
+  blue   = '#80a0ff',
+  cyan   = '#79dac8',
+  teal   = '#6dcbbd',
+  violet = '#bb9af7',
+}
+
+local theme = {
+  normal = {},
+  insert = { a = { bg = colours.teal, fg = colours.black }, b = "StatusLine" },
+  visual = { a = { bg = colours.violet, fg = colours.black }, b = "StatusLine" },
+  replace = { a = { bg = colours.red, fg = colours.black }, b = "StatusLine" },
+  inactive = {},
+}
+
+local branch = {
+  "branch",
+  icon = "",
+  fmt = function(s)
+    if #s == 0 then
+      return ""
+    end
+
+    local h = vim.api.nvim_get_hl(0, {
+      name = "StatusLine",
+    })
+    vim.api.nvim_set_hl(0, "LualineBranch", {
+      bold = true,
+      bg = h.bg,
+      fg = h.fg,
+    })
+    return "%#LualineBranch#" .. s
+  end,
+}
+
+local diff = {
+  "diff",
+  -- symbols = { added = " ", modified = " ", removed = " " },
+}
+
+local diagnostics = {
+  "diagnostics",
+  sources = { "nvim_diagnostic" },
+  symbols = { error = " ", warn = " ", info = " ", hint = " " },
+}
+
+local cwd = {
+  function()
+    return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+  end,
+}
+
+local macro = {
+  function()
+    local char_register = vim.fn.reg_recording()
+    if #char_register > 0 then
+      return "[REC @" .. char_register .. "]"
+    end
+    return ""
+  end,
+}
+
+local mode = { "mode" }
+
+local location = { "location" }
+
+local encoding = { "encoding" }
+
+local filetype = { "filetype" }
+
+local progress = { "progress" }
+require('lualine').setup({
+  options = {
+    theme = theme,
+    globalstatus = true,
+    always_divide_middle = false,
+    component_separators = "",
+    section_separators = "",
+    disabled_filetypes = {
+      statusline = { "neo-tree", "git", "fugitive", "toggleterm", "trouble" },
+      winbar = { "neo-tree", "DiffviewFiles", "git" },
+    },
+  },
+  sections = {
+    lualine_a = { mode },
+    lualine_b = { cwd, branch },
+    lualine_c = { diff, diagnostics },
+    lualine_x = {},
+    lualine_y = { macro, filetype, encoding },
+    lualine_z = { location, progress },
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {},
+  },
+})
+
 -- Functions.
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Enable yanking over ssh on OSC52-compatible terminal client',
@@ -183,6 +505,27 @@ vim.api.nvim_create_autocmd("BufReadPost", {
       -- Defer centering slightly so it is applied after render.
       vim.schedule(function()
         vim.cmd("normal! zz")
+      end)
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    -- Only act when entering an unnamed/empty buffer (the placeholder after deletion)
+    local name = vim.api.nvim_buf_get_name(0)
+    if name ~= "" then return end
+
+    -- Collect all real buffers (named or modified)
+    local real_bufs = vim.tbl_filter(function(buf)
+      return vim.api.nvim_buf_is_valid(buf)
+        and (vim.api.nvim_buf_get_name(buf) ~= ""
+             or vim.bo[buf].modified)
+    end, vim.api.nvim_list_bufs())
+
+    if #real_bufs == 0 then
+      vim.schedule(function()
+        vim.cmd("silent! alpha")
       end)
     end
   end,
@@ -234,7 +577,8 @@ vim.lsp.config('clangd', {
         local method_name = 'textDocument/switchSourceHeader'
         ---@diagnostic disable-next-line:param-type-mismatch
         if not client or not client:supports_method(method_name) then
-          return vim.notify(('method %s is not supported by any servers active on the current buffer'):format(method_name))
+          return vim.notify(('method %s is not supported by any servers active on the current buffer'):format(
+            method_name))
         end
         local params = vim.lsp.util.make_text_document_params(bufnr)
         ---@diagnostic disable-next-line:param-type-mismatch
@@ -358,6 +702,7 @@ vim.diagnostic.config({
     },
   },
 })
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
