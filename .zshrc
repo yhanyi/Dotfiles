@@ -117,6 +117,9 @@ alias q="QHOME=~/.q rlwrap -r ~/.q/m64/q"
 # iCloud folder alias.
 alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
 
+# Custom scripts.
+alias ytdl="~/Dotfiles/scripts/ytdl.sh"
+
 # LLVM compiler (clang).
 export LLVM_PATH="/opt/homebrew/opt/llvm"
 export PATH="$LLVM_PATH/bin:$PATH"

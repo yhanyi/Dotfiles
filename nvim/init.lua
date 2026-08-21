@@ -17,6 +17,8 @@ vim.pack.add({
   { src = "https://github.com/nvim-lua/plenary.nvim" },
   { src = "https://github.com/nvim-telescope/telescope.nvim" },
   { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
+  { src = "https://github.com/stevearc/conform.nvim" },
+  { src = "https://github.com/christoomey/vim-tmux-navigator" },
 })
 
 -- Theme.
@@ -36,44 +38,44 @@ vim.api.nvim_set_hl(0, "TabLineSel", { bg = "none" })
 vim.api.nvim_set_hl(0, "ColorColumn", { bg = "none" })
 
 -- Basic.
-vim.opt.number = true                   -- Show line numbers.
-vim.wo.relativenumber = true            -- Show relative line numbers.
-vim.opt.cursorline = true               -- Highlight current line.
-vim.opt.wrap = false                    -- Wrap lines.
-vim.opt.swapfile = false                -- Do not create swapfiles.
+vim.opt.number = true        -- Show line numbers.
+vim.wo.relativenumber = true -- Show relative line numbers.
+vim.opt.cursorline = true    -- Highlight current line.
+vim.opt.wrap = false         -- Wrap lines.
+vim.opt.swapfile = false     -- Do not create swapfiles.
 
 -- Indentation.
-vim.opt.tabstop = 2                     -- Tab width.
-vim.opt.shiftwidth = 2                  -- Indent width.
-vim.opt.softtabstop = 2                 -- Soft tab stop.
-vim.o.expandtab = true                  -- Use spaces instead of tabs.
-vim.opt.smartindent = true              -- Smart auto-indenting.
-vim.opt.autoindent = true               -- Copy indent from current line.
+vim.opt.tabstop = 2        -- Tab width.
+vim.opt.shiftwidth = 2     -- Indent width.
+vim.opt.softtabstop = 2    -- Soft tab stop.
+vim.o.expandtab = true     -- Use spaces instead of tabs.
+vim.opt.smartindent = true -- Smart auto-indenting.
+vim.opt.autoindent = true  -- Copy indent from current line.
 
 -- Search.
-vim.opt.ignorecase = true               -- Case insensitive search.
-vim.opt.smartcase = true                -- Case sensitive if uppercase in search.
-vim.opt.hlsearch = false                -- Do not highlight search results.
-vim.opt.incsearch = true                -- Show matches while typing.
+vim.opt.ignorecase = true -- Case insensitive search.
+vim.opt.smartcase = true  -- Case sensitive if uppercase in search.
+vim.opt.hlsearch = false  -- Do not highlight search results.
+vim.opt.incsearch = true  -- Show matches while typing.
 
 -- Behaviour.
-vim.opt.mouse = "a"                     -- Enable mouse support.
-vim.opt.clipboard:append("unnamedplus") -- Use system clipboard.
-vim.opt.autocomplete = true             -- Enable autocomplete.
+vim.opt.mouse = "a"                                         -- Enable mouse support.
+vim.opt.clipboard:append("unnamedplus")                     -- Use system clipboard.
+vim.opt.autocomplete = true                                 -- Enable autocomplete.
 vim.opt.completeopt = { "menuone", "noinsert", "noselect" } -- Completion options.
-vim.opt.encoding = "UTF-8"              -- Set encoding.
-vim.opt.modifiable = true               -- Allow buffer modifications.
-vim.opt.showmatch = true                -- Highlight matching brackets.
-vim.opt.cmdheight = 1                   -- Command line height.
-vim.opt.backspace = { "indent", "eol", "start" } -- Better backspace behaviour.
+vim.opt.encoding = "UTF-8"                                  -- Set encoding.
+vim.opt.modifiable = true                                   -- Allow buffer modifications.
+vim.opt.showmatch = true                                    -- Highlight matching brackets.
+vim.opt.cmdheight = 1                                       -- Command line height.
+vim.opt.backspace = { "indent", "eol", "start" }            -- Better backspace behaviour.
 
 -- Visual.
-vim.opt.termguicolors = true            -- Enable 24-bit colours.
-vim.opt.signcolumn = "yes"              -- Show sign column.
+vim.opt.termguicolors = true -- Enable 24-bit colours.
+vim.opt.signcolumn = "yes"   -- Show sign column.
 
 -- Mapping.
-vim.g.mapleader = " "                   -- Set leader key to space.
-vim.g.maplocalleader = " "              -- Set local leader key.
+vim.g.mapleader = " "      -- Set leader key to space.
+vim.g.maplocalleader = " " -- Set local leader key.
 
 -- Dashboard.
 local alpha, dashboard = require('alpha'), require('alpha.themes.dashboard')
@@ -519,8 +521,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
     -- Collect all real buffers (named or modified)
     local real_bufs = vim.tbl_filter(function(buf)
       return vim.api.nvim_buf_is_valid(buf)
-        and (vim.api.nvim_buf_get_name(buf) ~= ""
-             or vim.bo[buf].modified)
+          and (vim.api.nvim_buf_get_name(buf) ~= ""
+            or vim.bo[buf].modified)
     end, vim.api.nvim_list_bufs())
 
     if #real_bufs == 0 then
@@ -716,8 +718,32 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- Conform formatter.
+require("conform").setup({
+  formatters_by_ft = {
+    lua = { "stylua" },
+    python = { "ruff_format" }, -- or "black"
+    rust = { "rustfmt" },
+    c = { "clang-format" },
+    cpp = { "clang-format" },
+    javascript = { "prettierd", "prettier" },
+    typescript = { "prettierd", "prettier" },
+    markdown = { "prettierd", "prettier" },
+    json = { "prettierd", "prettier" },
+    yaml = { "prettierd", "prettier" },
+    typst = { "typstyle" },
+  },
+  format_on_save = nil,
+})
+
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
 vim.keymap.set('n', 'df', vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { desc = "Format local buffer" })
+vim.keymap.set("n", "<leader>lf", function()
+  require("conform").format({
+    lsp_fallback = true,
+    async = false,
+  })
+end, { desc = "Format buffer" })

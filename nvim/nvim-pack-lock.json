@@ -115,6 +115,10 @@
     "vim-fugitive": {
       "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
       "src": "https://github.com/tpope/vim-fugitive"
+    },
+    "vim-tmux-navigator": {
+      "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
+      "src": "https://github.com/christoomey/vim-tmux-navigator"
     }
   }
 }
