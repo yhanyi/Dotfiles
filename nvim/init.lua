@@ -540,14 +540,15 @@ vim.lsp.enable({ "clangd", "rust_analyzer", "cmake", "pyright", "tinymist", "lua
 
 -- Select C++ toolchain.
 local clangd_cmd = { 'clangd' }
+local system = vim.uv.os_uname().sysname
 
-if vim.fn.has('win32') == 1 then
+if system == "Windows_NT" then
   -- Windows: MSYS2 UCRT64 / MinGW-w64 GCC.
   clangd_cmd = {
     'clangd',
     '--query-driver=C:/msys64/ucrt64/bin/gcc.exe,C:/msys64/ucrt64/bin/g++.exe',
   }
-elseif vim.fn.has('mac') == 1 then
+elseif system == "Darwin" then
   -- MacOS: use compiler available on PATH.
   clangd_cmd = {
     'clangd',
