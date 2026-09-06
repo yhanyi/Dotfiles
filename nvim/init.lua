@@ -1,3 +1,4 @@
+
 -- Han Yi's NeoVim Config.
 
 -- Plugins.
@@ -537,8 +538,25 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- https://github.com/neovim/nvim-lspconfig/tree/master/lsp
 vim.lsp.enable({ "clangd", "rust_analyzer", "cmake", "pyright", "tinymist", "lua_ls" })
 
+-- Select C++ toolchain.
+local clangd_cmd = { 'clangd' }
+
+if vim.fn.has('win32') == 1 then
+  -- Windows: MSYS2 UCRT64 / MinGW-w64 GCC.
+  clangd_cmd = {
+    'clangd',
+    '--query-driver=C:/msys64/ucrt64/bin/gcc.exe,C:/msys64/ucrt64/bin/g++.exe',
+  }
+elseif vim.fn.has('mac') == 1 then
+  -- MacOS: use compiler available on PATH.
+  clangd_cmd = {
+    'clangd',
+    '--query-driver=/usr/bin/clang,/usr/bin/clang++',
+  }
+end
+
 vim.lsp.config('clangd', {
-  cmd = { 'clangd' },
+  cmd = clangd_cmd,
   filetypes = { 'c', 'cpp', 'cuda' },
   root_markers = {
     '.clangd',
