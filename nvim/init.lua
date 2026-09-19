@@ -1,5 +1,5 @@
-
 -- Han Yi's NeoVim Config.
+---@diagnostic disable:undefined-global
 
 -- Plugins.
 vim.pack.add({
@@ -14,7 +14,7 @@ vim.pack.add({
   { src = "https://github.com/mfussenegger/nvim-dap" },
   { src = "https://github.com/nvim-lualine/lualine.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main", },
   { src = "https://github.com/nvim-lua/plenary.nvim" },
   { src = "https://github.com/nvim-telescope/telescope.nvim" },
   { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
@@ -275,33 +275,38 @@ vim.keymap.set("n", "<leader>t",
   end,
   { noremap = true, silent = true, desc = "Toggle floating terminal" })
 
--- Treesitter.
-require('nvim-treesitter').setup({
-  ensure_installed = {
-    "lua",
-    "vim",
-    "vimdoc",
-    "python",
-    "cpp",
-    "rust",
-    "c",
-    "java",
-    "typst",
-    "typescript",
-    "javascript",
-    "bash",
-    "markdown",
-    "markdown_inline",
-  },
-  sync_install = false,
-  auto_install = true,
-  highlight = {
-    enable = true,
-    use_languagetree = true,
-  },
-  indent = {
-    enable = true,
-  }
+-- Treesitter
+local ts = require("nvim-treesitter")
+ts.setup()
+local parsers = {
+  "lua",
+  "vim",
+  "vimdoc",
+  "python",
+  "cpp",
+  "rust",
+  "c",
+  "java",
+  "typst",
+  "typescript",
+  "javascript",
+  "bash",
+  "markdown",
+  "markdown_inline",
+}
+ts.install(parsers)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = parsers,
+  callback = function()
+    -- Guard against parsers that are not finished installing.
+    local lang = vim.treesitter.language.get_lang(vim.bo.filetype) or vim.bo.filetype
+    if not pcall(vim.treesitter.get_parser, 0, lang) then
+      return
+    end
+    vim.treesitter.start()
+    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
 })
 
 -- Telescope.
