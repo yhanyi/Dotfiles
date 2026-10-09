@@ -140,3 +140,8 @@ export OLLAMA_ORIGINS=*
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(starship init zsh)"
+
+# Claude mods.
+_claude_mods=($HOME/Dotfiles/claude/mods/*(N/))
+export CLAUDE_CODE_PLUGIN_DIRS="${(j.:.)_claude_mods}"
+unset _claude_mods

@@ -1,0 +1,7 @@
+{
+  "name": "statusline",
+  "version": "0.2.0",
+  "description": "A tinkerable status line: rate-limit usage, reset times, cost, prompt-cache hits.",
+  "author": { "name": "yhanyi" },
+  "types": "./types/index.d.ts"
+}
