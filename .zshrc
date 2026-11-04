@@ -127,10 +127,9 @@ export CC="$LLVM_PATH/bin/clang"
 export CXX="$LLVM_PATH/bin/clang++"
 export CMAKE_C_COMPILER="$LLVM_PATH/bin/clang"
 export CMAKE_CXX_COMPILER="$LLVM_PATH/bin/clang++"
-export CPATH="$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
+export CPATH="/opt/homebrew/include"
 export LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
 export LD_LIBRARY_PATH="$LLVM_PATH/lib:/opt/homebrew/lib:/usr/local/lib"
-export CPLUS_INCLUDE_PATH="$LLVM_PATH/include/c++/v1:$LLVM_PATH/include:/opt/homebrew/include:/usr/local/include"
 export CLANGD_PATH="$LLVM_PATH/bin/clangd"
 
 # Ollama configs.

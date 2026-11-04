@@ -1,4 +1,3 @@
--- Han Yi's NeoVim Config.
 ---@diagnostic disable:undefined-global
 
 -- Plugins.
@@ -20,6 +19,7 @@ vim.pack.add({
   { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
   { src = "https://github.com/stevearc/conform.nvim" },
   { src = "https://github.com/christoomey/vim-tmux-navigator" },
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.*") },
 })
 
 -- Theme.
@@ -182,7 +182,7 @@ require('bufferline').setup({
     -- maximum_padding = 5,
     -- maximum_length = 15,
     sort_by = 'insert_at_end',
-    custom_filter = function(buf_number, buf_numbers)
+    custom_filter = function(buf_number, _)
       return vim.fn.bufname(buf_number) ~= ''
     end
   },
@@ -547,6 +547,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
 -- Language Server Protocol.
 -- https://github.com/neovim/nvim-lspconfig/tree/master/lsp
+vim.lsp.log.set_level("ERROR")
 vim.lsp.enable({ "clangd", "rust_analyzer", "cmake", "pyright", "tinymist", "lua_ls" })
 
 -- Select C++ toolchain.
@@ -584,9 +585,9 @@ vim.lsp.config('clangd', {
     return t[ftype] or ftype
   end,
   capabilities = {
-    textDocumet = {
+    textDocument = {
       completion = {
-        editsNearCusor = true,
+        editsNearCursor = true,
       },
     },
     offsetEncoding = { 'utf-8', 'utf-16' },
@@ -674,7 +675,7 @@ vim.lsp.config('rust_analyzer', {
   cmd = { 'rust-analyzer' },
   filetypes = { 'rust' },
   settings = {
-    ['rust_analyzer'] = {
+    ['rust-analyzer'] = {
       diagnostics = {
         enable = true
       }
@@ -712,8 +713,8 @@ vim.lsp.config('tinymist', {
 })
 
 vim.diagnostic.config({
-  virtual_lines = true,
-  -- virtual_text = true,
+  virtual_lines = false,
+  virtual_text = false,
   underline = true,
   update_in_insert = false,
   severity_sort = true,
@@ -735,32 +736,39 @@ vim.diagnostic.config({
   },
 })
 
+-- Squiggles under diagnostics.
+for _, sev in ipairs({ "Error", "Warn", "Info", "Hint" }) do
+  vim.api.nvim_set_hl(0, "DiagnosticUnderline" .. sev, {
+    undercurl = true,
+    sp = vim.api.nvim_get_hl(0, { name = "Diagnostic" .. sev }).fg,
+  })
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-      local chars = {}
-      for c in ('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'):gmatch('.') do
-        table.insert(chars, c)
-      end
-      local provider = client.server_capabilities.completionProvider
-      if provider then
-        provider.triggerCharacters = vim.list_extend(provider.triggerCharacters or {}, chars)
-      end
-      vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-      vim.keymap.set('i', '<C-Space>', function()
-        vim.lsp.completion.get()
-      end)
+    if client and client:supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
     end
   end,
+})
+
+-- Completion.
+require("blink.cmp").setup({
+  keymap = { preset = "enter" },
+  completion = {
+    documentation = { auto_show = true, auto_show_delay_ms = 300 },
+  },
+  signature = { enabled = true },
+  sources = { default = { "lsp", "path", "snippets", "buffer" } },
+  fuzzy = { implementation = "prefer_rust_with_warning" },
 })
 
 -- Conform formatter.
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
-    python = { "ruff_format" }, -- or "black"
+    python = { "ruff_format" },
     rust = { "rustfmt" },
     c = { "clang-format" },
     cpp = { "clang-format" },
@@ -779,9 +787,21 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
 vim.keymap.set('n', 'df', vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { desc = "Format local buffer" })
-vim.keymap.set("n", "<leader>lf", function()
+vim.keymap.set('n', '<leader>lf', function()
   require("conform").format({
     lsp_fallback = true,
     async = false,
   })
 end, { desc = "Format buffer" })
+vim.keymap.set('n', '<leader>ud', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = vim.diagnostic.is_enabled({ bufnr = bufnr })
+  vim.diagnostic.enable(not enabled, { bufnr = bufnr })
+  vim.notify(
+    "Diagnostics " .. (enabled and "disabled" or "enabled"),
+    vim.log.levels.INFO
+  )
+end, { desc = "Toggle diagnostics for current buffer" })
+vim.keymap.set('n', '<leader>uh', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle inlay hints" })

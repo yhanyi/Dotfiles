@@ -1,5 +1,5 @@
 format = """$directory$git_branch$git_status$character"""
-palette = "catppuccin"
+palette = "colours"
 
 [os]
 style = "fg:text"
@@ -103,7 +103,7 @@ vimcmd_replace_symbol = '[](bold fg:purple)'
 vimcmd_visual_symbol = '[](bold fg:lavender)'
 disabled = false
 
-[palettes.catppuccin]
+[palettes.colours]
 rosewater = "#f5e0dc"
 flamingo = "#f2cdcd"
 pink = "#f5c2e7"
