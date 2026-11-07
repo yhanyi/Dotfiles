@@ -1,7 +1,0 @@
-{
-  "name": "statusline",
-  "version": "0.3.0",
-  "description": "Minimalist statusline.",
-  "author": { "name": "yhanyi" },
-  "types": "./types/index.d.ts"
-}
